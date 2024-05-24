@@ -6,13 +6,13 @@ $ pip install google-generativeai
 
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyDPbxDvSPoa4p0XKq1SpMeuXCppD3xW9M8")
+genai.configure(api_key="YOUR_API_KEY")
 
 # Set up the model
 generation_config = {
   "temperature": 1,
   "top_p": 0.95,
-  "top_k": 0,
+  "top_k": 64,
   "max_output_tokens": 8192,
 }
 
@@ -35,7 +35,7 @@ safety_settings = [
   },
 ]
 
-model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
+model = genai.GenerativeModel(model_name="gemini-1.5-pro",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
@@ -73,6 +73,30 @@ prompt_parts = [
   "Tipo de Texto Texto jornalistico",
   "Contexto Desafio para a presidencia brasileira, as enchentes que assolam o povo da região sul",
   "output: \"Teste crucial para a liderança de Lula\" 📰🌎⁠⁠Nos últimos dias, vários veículos da imprensa internacional destacaram as enchentes no sul do Brasil.⁠⁠Uma análise da agência Bloomberg diz que esse será um dos momentos definidores da Presidência de Lula:⁠⁠\"Os assessores [de Lula] dizem que ele está perfeitamente consciente de que este pode ser o seu 'momento Katrina', uma referência ao furacão de 2005 que pegou o presidente dos EUA, George W. Bush, desprevenido e entrou no vocabulário global como sinônimo de fracasso de liderança em uma crise\", afirma o texto da Bloomberg, assinado por Travis Waldron.⁠⁠A agência disse que Lula reagiu às enchentes com atendimento às necessidades básicas dos afetados, viajando à região e assinando um decreto que retira os gastos emergenciais das regras fiscais.⁠⁠\"Com mais chuva e temperaturas em queda previstas durante a semana, os desafios só vão aumentar\", diz o texto da Bloomberg.⁠⁠\"Isso pode dar a Lula a oportunidade de recuperar uma presidência assolada nos últimos meses por rivalidades internas, brigas com o Congresso, escrutínio do mercado sobre os seus planos de gastos e popularidade em declínio.\"⁠⁠O jornal britânico Financial Times destacou o prejuízo financeiro do Estado — estimado na ordem de R$ 5 bilhões.⁠⁠O Washington Post, principal jornal da capital americana, também noticiou as enchentes.⁠⁠\"Mesmo em um país cada vez mais habituado a desastres naturais provocados pelas alterações climáticas, as inundações que engoliram o Rio Grande do Sul — um dos Estados mais desenvolvidos e prósperos do Brasil — abalaram gravemente esta nação de 215 milhões de habitantes. Com mais da metade das cidades do Estado enfrentando enchentes [...], o Rio Grande do Sul não foi apenas afetado. Foi arrasado.\"⁠⁠Leia mais sobre a repercussão internacional das enchentes no Sul em nossa reportagem. O link está na bio: @BBCBrasil⁠⁠#BBCBrasil #riograndedosul #enchentes #inundacoes #clima #imprensa #meioambiente",
+  "Tipo de Texto Texto informativo",
+  "Contexto Casamento Comunitário",
+  "output: No último sábado, dia 11 de Maio, a pastoral familiar de nossa paróquia realizou mais um casamento comunitário e dessa vez a celebração ocorreu na comunidade de São Francisco de Paula. Rezemos por esses casais que receberam este importante sacramento de nossa igreja, para que perseverem na fé e que possam se aproximar do exemplo da sagrada família de nazaré!",
+  "Tipo de Texto Texto Informativo",
+  "Contexto homenagem ao dia das mães GREMetrosul",
+  "output: Uma homenagem da GRE Metro Sul a todas as mães! 💖\n\nSer mãe é abraçar uma missão de amor, cuidado e dedicação sem fim. É nutrir a vida com afeto, guiar com sabedoria e fortalecer com esperança. \n\nA GRE Metro Sul se curva em reconhecimento a todas as mães, que com força, resiliência e amor incondicional, inspiram e transformam o mundo.\n\nFeliz Dia das Mães! 🥰💐",
+  "Tipo de Texto Texto informativo",
+  "Contexto homenagem do dia das mães  - Catequese infantil",
+  "output: 💖 Feliz Dia das Mães! 💖\n\nA catequese infantil da Paróquia [Nome da Paróquia] deseja um dia cheio de amor e alegria para todas as mamães! 💐\n\nSer mãe é um chamado divino, uma missão de amor, cuidado e fé. Agradecemos a cada mãe por seu carinho, dedicação e por serem exemplos de amor para seus filhos. 🙏\n\nQue Deus abençoe todas as mães, hoje e sempre! ✨",
+  "Tipo de Texto Texto descritivo",
+  "Contexto encontro bimestral de analistas (do CGGR)",
+  "output: Conectando saberes, construindo o futuro: Encontro bimestral de analistas.Na busca contínua pela excelência na gestão educacional, a CGGR da GRE Metro Sul promoveu o encontro bimestral de analistas. O evento realizado hoje, dia 17 de Maio, reuniu profissionais das escolas da Regional, fomentando um espaço de diálogo, troca de experiências e aprimoramento técnico. O encontro proporcionou uma rica troca de conhecimentos, fortalecendo a rede de colaboração entre os analistas e impulsionando a gestão eficiente da informação educacional na GRE Metro Sul. Juntos, seguimos construindo o caminho para uma educação de excelência!",
+  "Tipo de Texto homenagem",
+  "Contexto Dia do pedagogo",
+  "output: Homenagem ao Dia do Pedagogo\n\nA GRE Metro Sul presta uma homenagem especial a todos os pedagogos, **arquitetos da educação e artesãos do conhecimento**, que moldam mentes e inspiram corações. 💖\n\nCom paixão e dedicação, vocês constroem pontes para o saber, guiando nossos alunos em suas jornadas de aprendizagem. \n\n**Parabéns pelo seu dia!** 🎉\n\n**Que a chama da educação continue a brilhar forte em suas mãos, iluminando o presente e o futuro da nossa sociedade.** 📚✨",
+  "Tipo de Texto Texto informativo",
+  "Contexto Jeps Regional",
+  "output: A chama esportiva se acende na Regional: JEPs em ação! \n\nA GRE Metro Sul se prepara para sediar mais uma edição emocionante dos Jogos Escolares de Pernambuco (JEPs). \n\nEm breve, nossas escolas se transformarão em palcos de disputas acirradas, onde a energia da juventude se une à paixão pelo esporte. 🏀⚽🏐\n\nFique ligado para mais informações e venha vibrar com a gente! \n\n#GREMetroSul #Educação #Esporte #JEPs #Pernambuco",
+  "Tipo de Texto Texto informativo",
+  "Contexto Jeps Regional (reels)",
+  "output: 🔥 A chama esportiva está acesa na Regional!A GRE Metro Sul vai sediar mais uma emocionante edição dos Jogos Escolares de Pernambuco (JEPs).Nossas escolas se transformarão em palcos de disputas acirradas, onde a energia da juventude e a paixão pelo esporte se encontram. 🏀⚽🏐Fique ligado para mais informações e venha vibrar com a gente!#GREMetroSul #Educação #Esporte #JEPs #Pernambuco",
+  "Tipo de Texto texto convidativo",
+  "Contexto Festival de artes da juventude - arquidiocese de olinda e recife",
+  "output: ## Prepare-se para brilhar! 🎨🎶🎭\n\nO Festival de Artes da Juventude da Arquidiocese de Olinda e Recife está chegando! \n\nVocê, jovem talentoso, tem a oportunidade de mostrar seu dom nas categorias:\n\n* Música 🎤\n* Teatro 🎭\n* Dança 💃🕺\n* Artes Visuais 🖼️\n\nInscreva-se e participe dessa grande celebração da arte e da fé! \n\n**Acesse o link na bio para mais informações e para realizar sua inscrição!**\n\n**Data:** [Data do evento]\n**Local:** [Local do evento]\n\n**Juntos, vamos celebrar a arte e a juventude!** ✨\n\n#FestivalDeArtes #Juventude #Arquidiocese #OlindaERecife #Talento #Cultura #Fé",
   "Tipo de Texto ",
   "Contexto ",
   "output: ",
