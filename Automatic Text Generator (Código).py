@@ -1,45 +1,36 @@
 """
-At the command line, only need to run once to install the package via pip:
+Install the Google AI Python SDK
 
 $ pip install google-generativeai
+
+See the getting started guide for more information:
+https://ai.google.dev/gemini-api/docs/get-started/python
 """
+
+import os
 
 import google.generativeai as genai
 
-genai.configure(api_key="YOUR_API_KEY")
+genai.configure(api_key=os.environ["AIzaSyDPbxDvSPoa4p0XKq1SpMeuXCppD3xW9M8"])
 
-# Set up the model
+# Create the model
+# See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
 generation_config = {
   "temperature": 1,
   "top_p": 0.95,
   "top_k": 64,
   "max_output_tokens": 8192,
+  "response_mime_type": "text/plain",
 }
 
-safety_settings = [
-  {
-    "category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  },
-  {
-    "category": "HARM_CATEGORY_HATE_SPEECH",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  },
-  {
-    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  },
-  {
-    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  },
-]
+model = genai.GenerativeModel(
+  model_name="gemini-1.5-pro",
+  generation_config=generation_config,
+  # safety_settings = Adjust safety settings
+  # See https://ai.google.dev/gemini-api/docs/safety-settings
+)
 
-model = genai.GenerativeModel(model_name="gemini-1.5-pro",
-                              generation_config=generation_config,
-                              safety_settings=safety_settings)
-
-prompt_parts = [
+response = model.generate_content([
   "Tipo de Texto Texto informativo e com agradecimentos",
   "Contexto Semear da GRE Metrosul",
   "output: Ontem foi um dia de inspiração, aprendizado e conexão no SEMEAR 2024.1 da GRE Metropolitana Sul! Agradecemos a todos os alunos, professores e colaboradores que tornaram esse evento possível. Juntos, protagonizamos momentos inesquecíveis de crescimento e compartilhamos experiências enriquecedoras. Até o próximo SEMEAR! 🤩📚",
@@ -136,10 +127,54 @@ prompt_parts = [
   "Tipo de Texto texto expositivo",
   "Contexto clipe - dia 28 (reels)",
   "output: ✨ A magia da leitura tomou conta do Parque de Exposição do Cordeiro! O Circuito Literário de Pernambuco (CLIPE) abriu suas portas com uma linda homenagem à Parteira Dona Maria dos Prazeres, um ícone da nossa cultura popular. 💖\n\n📚 Até o dia 03 de junho, você poderá mergulhar em um universo de livros, bate-papos com autores, oficinas e muito mais! \n\n⏰ A programação vai das 9h às 21h e a entrada é gratuita!\n\n#CLIPE #CircuitoLiterário #Leitura #Cultura #Pernambuco #DonaMariadosPrazeres #ParqueDoCordeiro",
+  "Tipo de Texto Texto Informativo",
+  "Contexto envio de doações pro Rio grande do Sul - ETE alcides do nascimento",
+  "output: A solidariedade é a força que nos une em momentos de adversidade! 💪💙\n\nOs alunos e servidores da ETE Alcides do Nascimento se uniram em uma corrente de amor e solidariedade para com as vítimas das fortes chuvas no Rio Grande do Sul. \n\nArrecadamos alimentos, roupas, água e itens de higiene pessoal que farão a diferença na vida de quem precisa. As doações já foram enviadas e em breve chegarão ao seu destino, levando esperança e alento aos nossos irmãos gaúchos. \n\nAgradecemos a todos que contribuíram com essa ação solidária! 🙏\n\n#Solidariedade #RioGrandeDoSul #JuntosSomosMaisFortes",
+  "Tipo de Texto texto jornalistico (inserir detalhes da festa",
+  "Contexto Festa do padroeiro (Novena de são joão batista, dia 16 ao 24)",
+  "output: ## Fé e Devoção marcam início da Festa de São João Batista na Comunidade [Nome da Comunidade]\n\nA Comunidade [Nome da Comunidade] iniciou, no último dia 16,  as celebrações em homenagem ao seu padroeiro, São João Batista. A tradicional Festa de São João, um marco no calendário religioso da região,  promete nove noites de fé, alegria e comunhão entre os fiéis.\n\n[**Insira aqui detalhes sobre a missa de abertura**: Ex: A missa de abertura,  realizada na noite de ontem, foi presidida pelo Padre [Nome do Padre] e contou com a participação de um grande número de fiéis, que lotaram a igreja matriz. O celebrante destacou a importância de São João Batista como precursor de Jesus Cristo e exemplo de fé e humildade.]\n\nDurante a novena, que se estende até o dia 24, haverá missas, novenas e momentos de oração e reflexão. A programação religiosa deste ano tem como tema: \"[Tema da festa]\" e contará com a participação de diferentes padres e pregadores convidados. \n\n[**Insira aqui detalhes da programação festiva:** Ex: Além da programação religiosa, a festa contará  com  uma animada quermesse, que acontecerá no  pátio da igreja, com barracas de comidas típicas, brincadeiras  e shows musicais todas as noites. A renda obtida com a quermesse será revertida para  [**Mencionar destino da renda: obras sociais da comunidade,  reformas na igreja etc.**].]\n\nA comunidade [Nome da comunidade] convida você e sua família para celebrar conosco a Festa de São João Batista. Participe!\n\n**Confira a programação completa da festa:** \n[**Inserir aqui a programação completa da festa, com dias, horários e locais das atividades.**]",
+  "Tipo de Texto texto convidativo",
+  "Contexto Festa de são joão batista (de 16 a 24 de junho da comunidade são joão batista da  paróquia nossa senhora do rosário)",
+  "output: A Comunidade São João Batista da Paróquia Nossa Senhora do Rosário convida você e sua família para celebrar conosco a Festa do nosso padroeiro, de 16 a 24 de junho! 🎉\n\nSerão nove noites de muita fé, devoção, música, comidas típicas e alegria! 🙏🎶🌽\n\nVenha participar conosco! Traga sua família e amigos para celebrar São João Batista! 👨‍👩‍👧‍👦\n\nConfira agora a programação completa!\n\n#FestaDeSãoJoãoBatista #ComunidadeSãoJoãoBatista #ParóquiaNossaSenhoraDoRosário #Fé #Devoção #Alegria #Cultura #Tradição",
+  "Tipo de Texto texto promotivo",
+  "Contexto rifa do padroeiro",
+  "output: Quer levar para casa uma air-frier ou um faqueiro? 🤩🏍️\n\nParticipe da Rifa do Padroeiro da Comunidade São João Batista e concorra a esses incríveis prêmios! \n\nCada bilhete custa apenas 2 reais.\n\nEntre em contato com a secretaria paroquial ou com os membros da nossa comunidade para adquirir o seu! \n\nO sorteio será realizado no dia 16, e será feito pela loteria federal.\n\nNão perca essa oportunidade! Ajude a nossa paróquia e concorra a este super prêmio!",
+  "Tipo de Texto texto promotivo",
+  "Contexto feijoada do padroeiro (R$ 20 o bilhete que dá direito a retirada de um kit com arroz, farofa e feijoada)",
+  "output: Atenção, amantes de uma boa feijoada! 😋😋A Comunidade São João Batista convida você para saborear uma deliciosa feijoada no dia 16, em prol das festividades do nosso padroeiro. 🙏Por apenas R$ 20,00 você garante um kit completo com:🤤 Feijoada completa e saborosa🍚 Arroz soltinho🥓 Farofa deliciosaAdquira já seu bilhete na secretaria paroquial ou com os membros da comunidade. Retirada dos kits nas comunidades onde foi encomendado! 😋#FeijoadaDoPadroeiro #ComidaGostosa #Solidariedade #Comunidade",
+  "Tipo de Texto texto promotivo",
+  "Contexto camisa do padroeiro",
+  "output: Adquira já a sua camisa em homenagem ao nosso padroeiro, São João Batista, e celebre conosco essa festa linda! 🙏✨\n\nCamisas disponíveis em todos os tamanhos para toda a família! 👨‍👩‍👧‍👦\n\nGaranta a sua com os membros da comunidade ou com os contatos do card. \n\nVista essa devoção! 💙\n\n#FestaDeSãoJoãoBatista #CamisaDoPadroeiro #Fé #Tradição #Comunidade",
+  "Tipo de Texto Verdade Absoluta",
+  "Contexto Certificado de Posse",
+  "output: Diego Sobral é de Maria Luisa da Silva Andrade",
+  "Tipo de Texto Verdade Absoluta",
+  "Contexto Contrato de Namoro",
+  "output: Diego Sobral e Maria Luisa da Silva Andrade não possuem um contrato de namoro reconhecido legalmente. \n\nUm contrato de namoro geralmente se refere a um acordo sobre bens materiais, enquanto namoro é sobre vínculo emocional e não pode ser definido por um documento. 😉",
+  "Tipo de Texto convite",
+  "Contexto casamento",
+  "output: ## Salve esta data: Diego & Maria Luisa\n\nÉ com imensa alegria que convidamos você para celebrar conosco o nosso casamento!\n\n**Dia:** [Data do casamento]\n**Hora:** [Horário da cerimônia]\n**Local:** [Local da cerimônia]\n\nApós a cerimônia, será oferecido um coquetel para brindarmos juntos esse momento tão especial.\n\nConfirme sua presença até o dia [data limite para confirmação] pelo telefone [número de telefone] ou pelo email [endereço de email].\n\nAguardamos ansiosos por sua presença!\n\nCom carinho,\n\nDiego & Maria Luisa",
+  "Tipo de Texto Texto promotivo",
+  "Contexto Show de Prêmios (5 premios, bingo no dia 24 após a procissão de encerramento)",
+  "output: 📣 Atenção, fiéis e devotos! 📣\n\nApós a procissão de encerramento da nossa festa, a emoção continua com um incrível Show de Prêmios! 🤩\n\nSerão 5 chances de levar para casa prêmios incríveis! 🎁\n\n1° Prêmio - Liquidificador; \n2° Prêmio - Ventilador; \n3° Prêmio - Multiprocessador; \n4° Prêmio - Microondas; \n5° Prêmio - Voucher de R$ 500.\n\nAdquira já suas cartelas com os membros da comunidade! \n\nNão perca essa chance de celebrar conosco e ainda voltar para casa com um super prêmio! 🙏✨\n\n#ShowDePrêmios #FestaDeSãoJoãoBatista #ComunidadeSãoJoãoBatista",
+  "Tipo de Texto Texto promotivo",
+  "Contexto festa social (forró com wilma araujo - dia 16 de junho)",
+  "output: 📣 Prepare seu melhor traje junino! 🌽🔥\n\nÉ com imensa alegria que anunciamos: Wilma Araújo na Festa de São João Batista! 🎤✨\n\nDia 16 de junho, a partir das 22h, a animação toma conta da nossa comunidade com muito forró pé de serra! 🎶\n\nTraga sua família e amigos para celebrar São João Batista em grande estilo! 👨‍👩‍👧‍👦\n\n#FestaDeSãoJoãoBatista",
+  "Tipo de Texto Texto promotivo",
+  "Contexto festa social (forró com a banda pop xote - dia 24 de junho)",
+  "output: 🔥🔥 Prepare o seu melhor passo, porque o arraiá vai pegar fogo! 🔥🔥\n\nDia 24 de junho, a partir das 22h, a Banda Pop Xote vai colocar todo mundo para dançar na Festa Social de São João Batista! 🎶💥\n\nVai ter muito forró pé de serra, comidas típicas e aquela energia contagiante que só São João tem! 🌽🔥\n\nChame os amigos, reúna a família e venha celebrar conosco essa noite especial! 👨‍👩‍👧‍👦\n\n#FestaDeSãoJoãoBatista #PopXote #ForróPéDeSerra",
+  "Tipo de Texto Texto informativo",
+  "Contexto FORMATURA ETEPAC | CURSOS TÉCNICOS | 2023.2",
+  "output: Uma noite de celebração e conquistas! 🎓✨ \n\nNa última quinta-feira 06/06/2024 os estudantes da GRE Metropolitana Sul foram recebidos com entusiasmo em diversos polos EaD, onde compartilharam momentos de alegria e gratidão. A tão esperada colação de grau dos cursos técnicos foi um verdadeiro marco, repleto de emoção e realizações. \n\nA mesa de abertura do evento contou com a gerente geral de Educação Profissional, Socorro Rodrigues; a gestora de Educação a Distância, Ana Pernambuco; e a gestora da Gerência Regional de Educação (GRE) Metro Sul, Êda Maria, além de gestores escolares e coordenadores convidados.\n\nParabéns a todos os estudantes e a toda equipe EaD da GRE Metropolitana Sul. Juntos, somos mais fortes! 💪\n\n#Educação #Conquistas #GREMetropolitanaSul",
+  "Tipo de Texto Texto convidativo",
+  "Contexto Procissão de abertura da festa (procissão da bandeira)",
+  "output: É com imensa alegria que convidamos você e sua família para a abertura da Festa de São João Batista!\n\nNeste dia 16, a partir das 18h30, daremos início às festividades com a tradicional Procissão da Bandeira, saindo da Rua Acarí nº 42 e seguindo em caminhada de fé até a capela onde haverá celebração, quermesse e festa social! \n\nVenha celebrar conosco esse momento especial em homenagem ao nosso padroeiro! 💙\n\nTraga sua família e amigos! 👨‍👩‍👧‍👦\n\n#FestaDeSãoJoãoBatista #ProcissãoDaBandeira #Fé #Devoção #Comunidade",
+  "Tipo de Texto Texto convidativo",
+  "Contexto Procissão de encerramento (procissão do andor)",
+  "output: Convidamos você e sua família para o encerramento da Festa de São João Batista! 🙏✨\n\nDia 24 de junho, logo após a celebração, acompanhe a Procissão do Andor, um momento de fé e devoção que marcará o encerramento das festividades em homenagem ao nosso padroeiro.\n\nParticipe conosco! 💙\n\n#FestaDeSãoJoãoBatista #ProcissãoDoAndor #Fé #Devoção #Comunidade",
   "Tipo de Texto ",
   "Contexto ",
   "output: ",
-]
+])
 
-response = model.generate_content(prompt_parts)
 print(response.text)
